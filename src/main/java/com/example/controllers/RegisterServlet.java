@@ -22,7 +22,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user_signup.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -49,6 +49,6 @@ public class RegisterServlet extends HttpServlet {
         }
 
         // Redirect to success page
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("Index.jsp");
     }
 }

@@ -24,8 +24,8 @@
                 <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">How It Works</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.jsp">Login</a></li>
-                <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="user_signup.jsp">Get Started</a></li>
+                <li class="nav-item"><a class="nav-link" href="Login.jsp">Login</a></li>
+                <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="Register.jsp">Get Started</a></li>
             </ul>
         </div>
     </div>
@@ -36,7 +36,7 @@
     <div class="container text-center">
         <h1>Discover the Joy of Item Exchange</h1>
         <p>Your go-to platform for swapping items with ease and trust.</p>
-        <a href="user_signup.jsp" class="btn btn-primary btn-lg">Join Now</a>
+        <a href="Register.jsp" class="btn btn-primary btn-lg">Join Now</a>
         <a href="#how-it-works" class="btn btn-secondary btn-lg">Learn More</a>
     </div>
 </div>

@@ -73,6 +73,32 @@ public class UserModelDAO {
         return users;
     }
 
+    public UserModel getUserByUsernameAndPassword(String username, String password) throws SQLException {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        UserModel user = null;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new UserModel(
+                        resultSet.getInt("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("address_street"),
+                        resultSet.getString("address_city"),
+                        resultSet.getString("address_country"),
+                        resultSet.getString("address_zip_code")
+                );
+            }
+        }
+
+        return user;
+    }
+
     public void updateUser(UserModel user) throws SQLException {
         String sql = "UPDATE users SET username = ?, password = ?, address_street = ?, address_city = ?, address_country = ?, address_zip_code = ? WHERE id = ?";
 
