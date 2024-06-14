@@ -1,4 +1,4 @@
-package com.example.controllers;
+package com.example.controllers.authCtrl;
 
 import com.example.models.users.UserModel;
 import com.example.models.users.UserModelDAO;
@@ -31,10 +31,10 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                response.sendRedirect("UserDashboard.jsp");
+                response.sendRedirect("user-dashboard.jsp");
             } else {
                 request.setAttribute("errorMessage", "Invalid username or password");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
                 dispatcher.forward(request, response);
             }
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
         dispatcher.forward(request, response);
     }
 }

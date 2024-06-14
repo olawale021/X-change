@@ -1,3 +1,5 @@
+/*home.jsp*/
+
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #d7eaf3;
@@ -92,6 +94,9 @@ body {
     color: #14397d;
     border-radius: 10px;
 }
+
+
+/*footer*/
 .footer {
     background-color: #14397d;
     padding: 20px 0;
@@ -104,4 +109,38 @@ body {
 }
 .footer a:hover, .footer a:focus {
     color: #77b5d9;
+}
+
+
+/*user-dashboard.jsp*/
+
+.navbar, .footer {
+    background-color: #14397d;
+    color: white;
+}
+.card-header {
+    background-color: #77b5d9;
+    color: white;
+}
+.sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    background-color: #14397d;
+    padding-top: 60px;
+}
+.sidebar a {
+    color: white;
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+}
+.sidebar a:hover {
+    background-color: #77b5d9;
+}
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
 }

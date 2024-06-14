@@ -1,16 +1,11 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
-    <inspection_tool class="ImplicitTypeConversion" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="BITS" value="1720" />
-      <option name="FLAG_EXPLICIT_CONVERSION" value="true" />
-      <option name="IGNORE_NODESET_TO_BOOLEAN_VIA_STRING" value="true" />
-    </inspection_tool>
-    <inspection_tool class="UsePropertyAccessSyntax" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="VulnerableLibrariesLocal" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="isIgnoringEnabled" value="true" />
       <option name="ignoredModules">
         <list>
+          <option value="X-change" />
           <option value="X-change" />
           <option value="X-change" />
         </list>
@@ -19,10 +14,12 @@
         <list>
           <option value="org.xerial:sqlite-jdbc:3.36.0.3" />
           <option value="org.jetbrains.kotlin:kotlin-stdlib:1.4.0" />
+          <option value="commons-codec:commons-codec:1.9" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
+          <option value="Not exploitable" />
           <option value="Not exploitable" />
           <option value="Not exploitable" />
         </list>

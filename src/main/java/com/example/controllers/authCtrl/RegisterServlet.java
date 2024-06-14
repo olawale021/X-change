@@ -1,4 +1,4 @@
-package com.example.controllers;
+package com.example.controllers.authCtrl;
 
 import com.example.models.users.UserModel;
 import com.example.models.users.UserModelDAO;
@@ -22,7 +22,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -49,6 +49,6 @@ public class RegisterServlet extends HttpServlet {
         }
 
         // Redirect to success page
-        response.sendRedirect("Index.jsp");
+        response.sendRedirect("home.jsp");
     }
 }
