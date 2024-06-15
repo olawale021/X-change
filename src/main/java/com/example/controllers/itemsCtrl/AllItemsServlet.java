@@ -29,6 +29,7 @@ public class AllItemsServlet extends HttpServlet {
         try {
             LOGGER.info("Fetching items from database.");
             List<ItemsModel> items = itemsModelDAO.getAllItems();
+
             if (items == null || items.isEmpty()) {
                 LOGGER.info("No items found in the database.");
             } else {
@@ -36,7 +37,7 @@ public class AllItemsServlet extends HttpServlet {
             }
             request.setAttribute("items", items);
             LOGGER.info("Items set as request attribute.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
             dispatcher.forward(request, response);
             LOGGER.info("Request dispatched to home.jsp.");
         } catch (SQLException e) {

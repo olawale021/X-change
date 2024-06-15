@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,39 +8,51 @@
     <title>Add New Item</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="<c:url value='/css/style.css' />">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #d7eaf3;
+        }
+        .sidebar {
+            position: fixed;
+            top: 56px;
+            left: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #14397d;
+            padding-top: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+        .sidebar a {
+            display: block;
+            color: #ffffff;
+            padding: 10px;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #ffffff;
+            color: #14397d;
+        }
+        .main-content {
+            margin-left: 210px;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Header -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="#">X-Change</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="home.jsp">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">How It Works</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.jsp">Login</a></li>
-                <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="register.jsp">Get Started</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="header.jsp" />
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <a href="user-dashboard.jsp">Dashboard</a>
-    <a href="my-items.jsp">My Items</a>
-    <a href="add-item.jsp">Add Item</a>
-    <a href="exchanged-items.jsp">Exchanged Items</a>
-    <a href="pending-requests.jsp">Pending Requests</a>
-    <a href="edit-profile.jsp">Edit Profile</a>
-    <a href="logout">Logout</a>
+    <a href="<c:url value='/user-dashboard.jsp' />">Dashboard</a>
+    <a href="<c:url value='/my-items.jsp' />">My Items</a>
+    <a href="<c:url value='/add-item.jsp' />">Add Item</a>
+    <a href="<c:url value='/exchanged-items.jsp' />">Exchanged Items</a>
+    <a href="<c:url value='/pending-requests.jsp' />">Pending Requests</a>
+    <a href="<c:url value='/edit-profile.jsp' />">Edit Profile</a>
+    <a href="<c:url value='/logout' />">Logout</a>
 </div>
 
 <!-- Main Content -->
@@ -50,7 +63,7 @@
                 <h2>Add New Item</h2>
             </div>
             <div class="card-body">
-                <form action="additem" method="post" enctype="multipart/form-data">
+                <form action="<c:url value='/additem' />" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Item Name:</label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -103,20 +116,7 @@
 
 <!-- Footer -->
 <footer class="footer">
-    <div class="container text-center">
-        <p class="mb-1">© 2024 X-Change. All Rights Reserved.</p>
-        <ul class="list-inline mb-3">
-            <li class="list-inline-item"><a href="#">About</a></li>
-            <li class="list-inline-item"><a href="#">Contact</a></li>
-            <li class="list-inline-item"><a href="#">Terms of Service</a></li>
-            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-        </ul>
-        <div>
-            <a href="#"><img src="images/linkedin.png" alt="LinkedIn"></a>
-            <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
-            <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
-        </div>
-    </div>
+    <jsp:include page="footer.jsp" />
 </footer>
 
 <!-- Bootstrap JS, Popper.js, and jQuery -->

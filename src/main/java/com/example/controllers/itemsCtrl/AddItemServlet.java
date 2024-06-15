@@ -27,7 +27,6 @@ public class AddItemServlet extends HttpServlet {
     private Cloudinary cloudinary;
     private static final Logger LOGGER = Logger.getLogger(AddItemServlet.class.getName());
 
-
     public void init() {
         itemsModelDAO = new ItemsModelDAO();
         cloudinary = CloudinaryConfig.getCloudinary();
