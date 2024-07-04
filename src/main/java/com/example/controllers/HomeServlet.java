@@ -1,4 +1,4 @@
-package com.example.controllers.itemsCtrl;
+package com.example.controllers;
 
 import com.example.models.items.ItemsModel;
 import com.example.models.items.ItemsModelDAO;
@@ -16,10 +16,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/")
-public class AllItemsServlet extends HttpServlet {
+public class HomeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ItemsModelDAO itemsModelDAO;
-    private static final Logger LOGGER = Logger.getLogger(AllItemsServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HomeServlet.class.getName());
 
     public void init() {
         itemsModelDAO = new ItemsModelDAO();

@@ -30,7 +30,9 @@ public class LoginServlet extends HttpServlet {
             UserModel user = userModelDAO.getUserByUsernameAndPassword(username, password);
             if (user != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("user", user);
+                session.setAttribute("userId", user.getId()); // Store the user ID in the session
+                session.setAttribute("user", user); // store the entire user object
+                System.out.println("User ID set in session: " + user.getId());
                 response.sendRedirect("user-dashboard.jsp");
             } else {
                 request.setAttribute("errorMessage", "Invalid username or password");

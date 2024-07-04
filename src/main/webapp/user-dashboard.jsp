@@ -5,56 +5,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <!-- Bootstrap CSS -->
+    <title>User Dashboard - MangoEx</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="<c:url value='/css/style.css' />">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
         }
         .navbar-brand {
-            font-size: 30px;
+            font-size: 24px;
+            font-weight: bold;
         }
         .sidebar {
             position: fixed;
             top: 56px;
             left: 0;
-            width: 200px;
-            height: 100%;
+            width: 220px;
+            height: calc(100vh - 56px);
             background-color: #14397d;
             padding-top: 20px;
-            border-right: 1px solid #dee2e6;
+            overflow-y: auto;
         }
         .sidebar a {
             display: block;
             color: #ffffff;
-            padding: 10px;
+            padding: 12px 20px;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
-        .sidebar a:hover {
+        .sidebar a:hover, .sidebar a:focus {
             background-color: #ffffff;
             color: #14397d;
         }
+        .sidebar i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
         .main-content {
-            margin-left: 210px;
+            margin-left: 220px;
             padding: 20px;
         }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
         .card-header {
-            background-color: #007bff;
+            background-color: #14397d;
             color: white;
+            font-weight: bold;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .btn-primary {
+            background-color: #14397d;
+            border-color: #14397d;
+        }
+        .btn-primary:hover {
+            background-color: #0e2b5c;
+            border-color: #0e2b5c;
+        }
+        .table {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table thead th {
+            background-color: #14397d;
+            color: white;
+            border: none;
         }
         .footer {
-            background-color: #343a40;
+            background-color: #14397d;
             color: white;
             padding: 20px 0;
+            margin-top: 40px;
         }
         .footer a {
-            color: white;
+            color: #9fcdff;
             margin: 0 10px;
+            transition: color 0.3s ease;
         }
         .footer a:hover {
-            color: #007bff;
+            color: white;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -64,27 +105,29 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <a href="<c:url value='/dashboard.jsp' />">Dashboard</a>
-    <a href="<c:url value='/my-items.jsp' />">My Items</a>
-    <a href="<c:url value='/add-item.jsp' />">Add Item</a>
-    <a href="<c:url value='/exchanged-items.jsp' />">Exchanged Items</a>
-    <a href="<c:url value='/pending-requests.jsp' />">Pending Requests</a>
-    <a href="<c:url value='/edit-profile.jsp' />">Edit Profile</a>
-    <a href="<c:url value='/logout' />">Logout</a>
+    <a href="<c:url value='/dashboard.jsp' />"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="<c:url value='/user-items' />"><i class="fas fa-box-open"></i> My Items</a>
+    <a href="<c:url value='/additem' />"><i class="fas fa-plus-circle"></i> Add Item</a>
+    <a href="<c:url value='/exchanged-items.jsp' />"><i class="fas fa-exchange-alt"></i> Exchanged Items</a>
+    <a href="<c:url value='/pending-requests.jsp' />"><i class="fas fa-clock"></i> Pending Requests</a>
+    <a href="<c:url value='/edit-profile.jsp' />"><i class="fas fa-user-edit"></i> Edit Profile</a>
+    <a href="<c:url value='/logout' />"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
 
 <!-- Main Content -->
 <div class="main-content">
-    <div class="container mt-5">
+    <div class="container-fluid">
+        <h1 class="mb-4">Dashboard</h1>
         <div class="row">
             <!-- Items Listed Card -->
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        Items Listed
+                        <i class="fas fa-list"></i> Items Listed
                     </div>
                     <div class="card-body">
-                        <p class="card-text">You have <c:out value="${itemsListedCount}" /> items listed for exchange.</p>
+                        <h2 class="card-title"><c:out value="${itemsListedCount}" /></h2>
+                        <p class="card-text">Items listed for exchange</p>
                         <a href="<c:url value='/my-items.jsp' />" class="btn btn-primary">View Items</a>
                     </div>
                 </div>
@@ -93,11 +136,12 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        Items Exchanged
+                        <i class="fas fa-exchange-alt"></i> Items Exchanged
                     </div>
                     <div class="card-body">
-                        <p class="card-text">You have exchanged <c:out value="${itemsExchangedCount}" /> items.</p>
-                        <a href="<c:url value='/exchanged-items.jsp' />" class="btn btn-primary">View Exchanged Items</a>
+                        <h2 class="card-title"><c:out value="${itemsExchangedCount}" /></h2>
+                        <p class="card-text">Successfully exchanged items</p>
+                        <a href="<c:url value='/exchanged-items.jsp' />" class="btn btn-primary">View Exchanges</a>
                     </div>
                 </div>
             </div>
@@ -105,63 +149,79 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        Pending Requests
+                        <i class="fas fa-hourglass-half"></i> Pending Requests
                     </div>
                     <div class="card-body">
-                        <p class="card-text">You have <c:out value="${pendingRequestsCount}" /> pending requests.</p>
+                        <h2 class="card-title"><c:out value="${pendingRequestsCount}" /></h2>
+                        <p class="card-text">Requests awaiting your response</p>
                         <a href="<c:url value='/pending-requests.jsp' />" class="btn btn-primary">View Requests</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- My Items Section -->
         <div class="row mt-5">
-            <!-- My Items Section -->
             <div class="col-md-12">
-                <h2>My Items</h2>
-                <a href="<c:url value='/add-item.jsp' />" class="btn btn-success mb-3">Add New Item</a>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Item Name</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Condition</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="item" items="${myItems}">
+                <h2 class="mb-3">My Items</h2>
+                <a href="<c:url value='/add-item.jsp' />" class="btn btn-success mb-3"><i class="fas fa-plus"></i> Add New Item</a>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
                         <tr>
-                            <td><c:out value="${item.name}" /></td>
-                            <td><c:out value="${item.description}" /></td>
-                            <td><c:out value="${item.category}" /></td>
-                            <td><c:out value="${item.condition}" /></td>
-                            <td>
-                                <a href="<c:url value='/edit-item.jsp?id=${item.id}' />" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="<c:url value='/delete-item?id=${item.id}' />" class="btn btn-danger btn-sm">Delete</a>
-                            </td>
+                            <th>Item Name</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Condition</th>
+                            <th>Actions</th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="item" items="${myItems}">
+                            <tr>
+                                <td><c:out value="${item.name}" /></td>
+                                <td><c:out value="${item.description}" /></td>
+                                <td><c:out value="${item.category}" /></td>
+                                <td><c:out value="${item.condition}" /></td>
+                                <td>
+                                    <a href="<c:url value='/edit-item.jsp?id=${item.id}' />" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                    <a href="<c:url value='/delete-item?id=${item.id}' />" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        <!-- User Profile and Recent Activities -->
         <div class="row mt-5">
-            <!-- User Profile Section -->
             <div class="col-md-6">
-                <h2>User Profile</h2>
-                <p>Name: <c:out value="${userName}" /></p>
-                <p>Email: <c:out value="${userEmail}" /></p>
-                <a href="<c:url value='/edit-profile.jsp' />" class="btn btn-primary">Edit Profile</a>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-user"></i> User Profile
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> <c:out value="${userName}" /></p>
+                        <p><strong>Email:</strong> <c:out value="${userEmail}" /></p>
+                        <a href="<c:url value='/edit-profile.jsp' />" class="btn btn-primary"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                    </div>
+                </div>
             </div>
-            <!-- Recent Activities Section -->
             <div class="col-md-6">
-                <h2>Recent Activities</h2>
-                <ul class="list-group">
-                    <c:forEach var="activity" items="${recentActivities}">
-                        <li class="list-group-item"><c:out value="${activity}" /></li>
-                    </c:forEach>
-                </ul>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-history"></i> Recent Activities
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <c:forEach var="activity" items="${recentActivities}">
+                                <li class="list-group-item"><c:out value="${activity}" /></li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

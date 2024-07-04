@@ -20,7 +20,6 @@ public class DatabaseConnection {
             Class.forName("org.sqlite.JDBC");
             LOGGER.info("SQLite JDBC Driver loaded successfully.");
         } catch (ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "SQLite JDBC driver not found", e);
             throw new ExceptionInInitializerError("SQLite JDBC driver not found");
         }
     }

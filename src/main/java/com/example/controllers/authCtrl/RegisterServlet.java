@@ -26,7 +26,8 @@ public class RegisterServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String addressStreet = request.getParameter("addressStreet");

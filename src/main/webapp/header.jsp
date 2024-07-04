@@ -35,11 +35,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="home.jsp">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="all-items">All Items</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">How It Works</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="additem">Add Item</a></li>
+                <li class="nav-item"><a class="nav-link" href="user-items">My Items</a></li>
+                <li class="nav-item"><a class="nav-link" href="offers">Offers</a></li>
                 <c:choose>
                     <c:when test="${not empty user}">
                         <li class="nav-item dropdown">
@@ -48,6 +48,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="<c:url value='/settings.jsp' />">Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="<c:url value='/user-dashboard.jsp' />">Dashboard</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<c:url value='/logout' />">Logout</a>
                             </div>
