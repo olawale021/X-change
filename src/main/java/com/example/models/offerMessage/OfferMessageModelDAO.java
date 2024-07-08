@@ -5,6 +5,7 @@ import com.example.utils.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OfferMessageModelDAO {
@@ -31,50 +32,23 @@ public class OfferMessageModelDAO {
         }
     }
 
-    public List<OfferMessageModel> getOfferMessagesByExchangeId(int exchangeId) throws SQLException {
-        String query = "SELECT om.*, " +
+
+    public List<OfferMessageModel> getPendingOffers(int userId) throws SQLException {
+        String query = "SELECT DISTINCT om.*, " +
                 "sender.username AS senderName, " +
                 "receiver.username AS recipientName, " +
-                "i.title AS itemName " +
+                "i.title AS itemName, e.status " +
                 "FROM offer_messages om " +
                 "JOIN users sender ON om.sender_id = sender.id " +
                 "JOIN users receiver ON om.receiver_id = receiver.id " +
                 "JOIN exchanges e ON om.exchange_id = e.id " +
                 "JOIN items i ON e.item_id = i.id " +
-                "WHERE om.exchange_id = ?";
-        List<OfferMessageModel> offerMessages = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, exchangeId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                OfferMessageModel offerMessage = new OfferMessageModel();
-                offerMessage.setId(rs.getInt("id"));
-                offerMessage.setExchangeId(rs.getInt("exchange_id"));
-                offerMessage.setSenderId(rs.getInt("sender_id"));
-                offerMessage.setReceiverId(rs.getInt("receiver_id"));
-                offerMessage.setMessage(rs.getString("message"));
-                offerMessage.setCreatedAt(rs.getTimestamp("created_at"));
-                offerMessage.setSenderName(rs.getString("senderName"));
-                offerMessage.setRecipientName(rs.getString("recipientName"));
-                offerMessage.setItemName(rs.getString("itemName"));
-                offerMessages.add(offerMessage);
-            }
-        }
-        return offerMessages;
-    }
-
-    public List<OfferMessageModel> getSentOffersByUserId(int userId) throws SQLException {
-        String query = "SELECT om.*, u.username as recipientName, i.title as itemName " +
-                "FROM offer_messages om " +
-                "JOIN users u ON om.receiver_id = u.id " +
-                "JOIN exchanges e ON om.exchange_id = e.id " +
-                "JOIN items i ON e.item_id = i.id " +
-                "WHERE om.sender_id = ?";
-        List<OfferMessageModel> offers = new ArrayList<>();
+                "WHERE e.status = 'Pending' AND (om.sender_id = ? OR om.receiver_id = ?)";
+        List<OfferMessageModel> pendingOffers = new ArrayList<>();
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, userId);
+            stmt.setInt(2, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 OfferMessageModel offer = new OfferMessageModel();
@@ -84,13 +58,17 @@ public class OfferMessageModelDAO {
                 offer.setReceiverId(rs.getInt("receiver_id"));
                 offer.setMessage(rs.getString("message"));
                 offer.setCreatedAt(rs.getTimestamp("created_at"));
+                offer.setSenderName(rs.getString("senderName"));
                 offer.setRecipientName(rs.getString("recipientName"));
                 offer.setItemName(rs.getString("itemName"));
-                offers.add(offer);
+                offer.setStatus(rs.getString("status"));
+                offer.setIsSentOffer(rs.getInt("sender_id") == userId);
+                pendingOffers.add(offer);
             }
         }
-        return offers;
+        return pendingOffers;
     }
+
 
     public List<OfferMessageModel> getReceivedOffersByUserId(int userId) throws SQLException {
         String query = "SELECT om.*, u.username as senderName, i.title as itemName " +
@@ -227,5 +205,77 @@ public class OfferMessageModelDAO {
             }
         }
         return offers;
+    }
+    public ExchangeDetails getExchangeDetailsById(int exchangeId) throws SQLException {
+        String query = "SELECT e.interested_user_id, i.user_id AS owner_id " +
+                "FROM exchanges e " +
+                "JOIN items i ON e.item_id = i.id " +
+                "WHERE e.id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, exchangeId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new ExchangeDetails(rs.getInt("interested_user_id"), rs.getInt("owner_id"));
+                } else {
+                    throw new SQLException("No exchange found with ID: " + exchangeId);
+                }
+            }
+        }
+    }
+
+    public List<OfferMessageModel> getOfferMessagesByExchangeId(int exchangeId) throws SQLException {
+        String query = "SELECT om.*, " +
+                "sender.username AS senderName, " +
+                "receiver.username AS recipientName, " +
+                "i.title AS itemName " +
+                "FROM offer_messages om " +
+                "JOIN users sender ON om.sender_id = sender.id " +
+                "JOIN users receiver ON om.receiver_id = receiver.id " +
+                "JOIN exchanges e ON om.exchange_id = e.id " +
+                "JOIN items i ON e.item_id = i.id " +
+                "WHERE om.exchange_id = ?";
+
+        List<OfferMessageModel> offerMessages = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, exchangeId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                OfferMessageModel offerMessage = new OfferMessageModel();
+                offerMessage.setId(rs.getInt("id"));
+                offerMessage.setExchangeId(rs.getInt("exchange_id"));
+                offerMessage.setSenderId(rs.getInt("sender_id"));
+                offerMessage.setReceiverId(rs.getInt("receiver_id"));
+                offerMessage.setMessage(rs.getString("message"));
+                offerMessage.setCreatedAt(rs.getTimestamp("created_at"));
+                offerMessage.setSenderName(rs.getString("senderName"));
+                offerMessage.setRecipientName(rs.getString("recipientName"));
+                offerMessage.setItemName(rs.getString("itemName"));
+                offerMessages.add(offerMessage);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "SQL error while fetching messages by exchange ID", e);
+            throw e;
+        }
+        return offerMessages;
+    }
+
+    public static class ExchangeDetails {
+        private final int interestedUserId;
+        private final int ownerId;
+
+        public ExchangeDetails(int interestedUserId, int ownerId) {
+            this.interestedUserId = interestedUserId;
+            this.ownerId = ownerId;
+        }
+
+        public int getInterestedUserId() {
+            return interestedUserId;
+        }
+
+        public int getOwnerId() {
+            return ownerId;
+        }
     }
 }

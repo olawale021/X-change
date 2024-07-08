@@ -238,18 +238,6 @@
 <body>
 
 <jsp:include page="header.jsp" />
-
-<!-- Sidebar -->
-<div class="sidebar">
-    <a href="<c:url value='/user-dashboard.jsp' />"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-    <a href="<c:url value='/my-items.jsp' />"><i class="fas fa-box-open"></i> My Items</a>
-    <a href="<c:url value='/add-item.jsp' />"><i class="fas fa-plus-circle"></i> Add Item</a>
-    <a href="<c:url value='/exchanged-items.jsp' />"><i class="fas fa-exchange-alt"></i> Exchanged Items</a>
-    <a href="<c:url value='/pending-requests.jsp' />"><i class="fas fa-clock"></i> Pending Requests</a>
-    <a href="<c:url value='/edit-profile.jsp' />"><i class="fas fa-user-edit"></i> Edit Profile</a>
-    <a href="<c:url value='/logout' />"><i class="fas fa-sign-out-alt"></i> Logout</a>
-</div>
-
 <!-- Main Content -->
 <div class="main-content">
     <div class="container-fluid">

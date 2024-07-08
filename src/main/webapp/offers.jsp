@@ -122,7 +122,7 @@
     }
     .btn-danger {
       background-color: var(--danger-color);
-      border-color: var(--danger-color);
+      border-color: var (--danger-color);
     }
     .offer-type {
       position: absolute;
@@ -162,6 +162,10 @@
             <div class="meta-info">
               <i class="fas fa-user"></i> ${offer.isSentOffer ? 'To: '.concat(offer.recipientName) : 'From: '.concat(offer.senderName)}
             </div>
+            <form action="fetchConversation" method="get" target="_blank">
+              <input type="hidden" name="exchangeId" value="<c:out value='${offer.exchangeId}' />" />
+              <button type="submit" class="btn btn-primary mt-3">View Conversation</button>
+            </form>
             <c:if test="${!offer.isSentOffer}">
               <form action="offerAction" method="post" class="mt-3">
                 <input type="hidden" name="offerId" value="<c:out value='${offer.id}' />" />
@@ -174,6 +178,7 @@
       </c:forEach>
     </div>
   </div>
+
 
   <div class="offer-section accepted">
     <h2>Accepted Offers</h2>
@@ -195,6 +200,10 @@
             <div class="meta-info">
               <i class="fas fa-user"></i> ${offer.isSentOffer ? 'To: '.concat(offer.recipientName) : 'From: '.concat(offer.senderName)}
             </div>
+            <form action="fetchConversation" method="get" target="_blank">
+              <input type="hidden" name="exchangeId" value="<c:out value='${offer.exchangeId}' />" />
+              <button type="submit" class="btn btn-primary mt-3">View Conversation</button>
+            </form>
           </div>
         </div>
       </c:forEach>
@@ -221,6 +230,10 @@
             <div class="meta-info">
               <i class="fas fa-user"></i> ${offer.isSentOffer ? 'To: '.concat(offer.recipientName) : 'From: '.concat(offer.senderName)}
             </div>
+            <form action="fetchConversation" method="get" target="_blank">
+              <input type="hidden" name="exchangeId" value="<c:out value='${offer.exchangeId}' />" />
+              <button type="submit" class="btn btn-primary mt-3">View Conversation</button>
+            </form>
           </div>
         </div>
       </c:forEach>

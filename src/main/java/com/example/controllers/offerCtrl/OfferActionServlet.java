@@ -27,26 +27,27 @@ public class OfferActionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String offerIdStr = request.getParameter("offerId");
+        String exchangeIdStr = request.getParameter("exchangeId");
         String action = request.getParameter("action");
 
-        if (offerIdStr == null || action == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing offer ID or action");
+        if (exchangeIdStr == null || action == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing exchange ID or action");
             return;
         }
 
-        int offerId;
+        int exchangeId;
         try {
-            offerId = Integer.parseInt(offerIdStr);
+            exchangeId = Integer.parseInt(exchangeIdStr);
         } catch (NumberFormatException e) {
-            LOGGER.log(Level.WARNING, "Invalid offer ID format: " + offerIdStr);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid offer ID format");
+            LOGGER.log(Level.WARNING, "Invalid exchange ID format: " + exchangeIdStr);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid exchange ID format");
             return;
         }
 
         try {
-            // Get exchange ID associated with the offer
-            int exchangeId = offerMessageModelDAO.getExchangeIdByOfferId(offerId);
+            // Determine userId based on itemId
+            int itemId = exchangeModelDAO.getItemIdByExchangeId(exchangeId);
+            int userId = exchangeModelDAO.getUserIdByItemId(itemId);
 
             if ("accept".equals(action)) {
                 exchangeModelDAO.updateExchangeStatus(exchangeId, "Accepted");
