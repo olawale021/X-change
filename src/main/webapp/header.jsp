@@ -39,7 +39,7 @@
                 <li class="nav-item"><a class="nav-link" href="all-items">All Items</a></li>
                 <li class="nav-item"><a class="nav-link" href="additem">Add Item</a></li>
                 <li class="nav-item"><a class="nav-link" href="user-items">My Items</a></li>
-                <li class="nav-item"><a class="nav-link" href="offers">Offers</a></li>
+                <li class="nav-item"><a class="nav-link" href="fetchExchanges">Offers</a></li>
                 <c:choose>
                     <c:when test="${not empty user}">
                         <li class="nav-item dropdown">
