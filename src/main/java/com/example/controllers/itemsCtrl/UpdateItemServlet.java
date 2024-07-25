@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.example.models.items.ItemsModel;
 import com.example.models.items.ItemsModelDAO;
 import com.example.utils.CloudinaryConfig;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.google.gson.Gson;
 
 @WebServlet("/update-item")
 @MultipartConfig
@@ -41,6 +41,7 @@ public class UpdateItemServlet extends HttpServlet {
         String description = request.getParameter("description");
         int categoryId = Integer.parseInt(request.getParameter("categoryId"));
         String condition = request.getParameter("condition");
+        String itemFeatures = request.getParameter("itemFeatures");
 
         ItemsModel item = new ItemsModel();
         item.setId(itemId);
@@ -48,6 +49,7 @@ public class UpdateItemServlet extends HttpServlet {
         item.setDescription(description);
         item.setCategoryId(categoryId);
         item.setCondition(condition);
+        item.setItemFeature(itemFeatures);
 
         List<String> photos = new ArrayList<>();
         for (Part part : request.getParts()) {
@@ -70,21 +72,14 @@ public class UpdateItemServlet extends HttpServlet {
         // Combine new photos with existing photos
         String existingPhotosJson = request.getParameter("existingPhotosJson");
         if (existingPhotosJson != null && !existingPhotosJson.isEmpty()) {
-            // Remove surrounding quotes and split by comma
-            String cleanedJson = existingPhotosJson.replaceAll("[\\[\\]\\s]", "");
-            if (!cleanedJson.isEmpty()) {
-                String[] existingPhotos = cleanedJson.split(",");
-                for (String photo : existingPhotos) {
-                    photos.add(photo.replace("\"", "")); // Remove any remaining quotes
-                }
+            String[] existingPhotos = new Gson().fromJson(existingPhotosJson, String[].class);
+            for (String photo : existingPhotos) {
+                photos.add(photo);
             }
         }
 
-        // Remove any empty strings that might cause formatting issues
-        photos.removeIf(String::isEmpty);
-
         // Convert list of photos to JSON
-        String photosJson = new Gson().toJson(photos); // Use Gson to create a properly formatted JSON array
+        String photosJson = new Gson().toJson(photos);
         item.setPhotosJson(photosJson);
 
         try {

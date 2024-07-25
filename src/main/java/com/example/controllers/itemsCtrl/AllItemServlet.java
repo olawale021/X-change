@@ -29,8 +29,17 @@ public class AllItemServlet extends HttpServlet {
         List<CategoryModel> categories = null;
 
         try {
-            items = itemsModelDAO.getAllItems();
             categories = itemsModelDAO.getAllCategories();
+
+            // Check if categories are selected
+            String[] selectedCategoryIds = request.getParameterValues("category");
+            if (selectedCategoryIds != null && selectedCategoryIds.length > 0) {
+                // Fetch items based on selected categories
+                items = itemsModelDAO.getItemsByCategories(selectedCategoryIds);
+            } else {
+                // Fetch all items if no category is selected
+                items = itemsModelDAO.getAllItems();
+            }
         } catch (SQLException e) {
             throw new ServletException("Error fetching items or categories", e);
         }

@@ -16,6 +16,7 @@ public class ItemsModel {
     private Timestamp updatedAt;
     private String categoryName;
     private String photosJson;
+    private String ItemFeature;
 
     // Default constructor with list initialization
     public ItemsModel() {
@@ -23,7 +24,7 @@ public class ItemsModel {
     }
 
     // Parameterized constructor with list initialization
-    public ItemsModel(int id, int userId, int categoryId, String title, String description, String condition, List<String> photos, Timestamp createdAt, Timestamp updatedAt, String categoryName, String photosJson) {
+    public ItemsModel(int id, int userId, int categoryId, String title, String description, String condition, List<String> photos, Timestamp createdAt, Timestamp updatedAt, String categoryName, String photosJson, String ItemFeature) {
         this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;
@@ -35,6 +36,7 @@ public class ItemsModel {
         this.updatedAt = updatedAt;
         this.categoryName = categoryName;
         this.photosJson = photosJson;
+        this.ItemFeature = ItemFeature;
     }
 
     // Getters and Setters
@@ -133,5 +135,11 @@ public class ItemsModel {
 
     public void setPhotosJson(String photosJson) {
         this.photosJson = photosJson;
+    }
+    public String getItemFeature() {
+        return ItemFeature;
+    }
+    public void setItemFeature(String itemFeature) {
+        ItemFeature = itemFeature;
     }
 }
