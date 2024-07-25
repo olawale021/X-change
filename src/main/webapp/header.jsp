@@ -39,7 +39,7 @@
                 <li class="nav-item"><a class="nav-link" href="all-items">All Items</a></li>
                 <li class="nav-item"><a class="nav-link" href="additem">Add Item</a></li>
                 <li class="nav-item"><a class="nav-link" href="user-items">My Items</a></li>
-                <li class="nav-item"><a class="nav-link" href="fetchExchanges">Offers</a></li>
+                <li class="nav-item"><a class="nav-link" href="fetchExchanges">Exchanges</a></li>
                 <c:choose>
                     <c:when test="${not empty user}">
                         <li class="nav-item dropdown">
@@ -47,7 +47,7 @@
                                 <c:out value="${user.username}" />
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="<c:url value='/settings.jsp' />">Settings</a>
+                                <a class="dropdown-item" href="<c:url value='/predict' />">Predict Category</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<c:url value='/user-dashboard.jsp' />">Dashboard</a>
                                 <div class="dropdown-divider"></div>
