@@ -1,0 +1,14 @@
+@relation ItemsDataset
+
+@attribute Category string
+@attribute ItemTitle string
+@attribute ItemFeatures string
+
+@data
+Books,'The Love Hypothesis','Title: The Great Gatsby, Author: F. Scott Fitzgerald, Genre: Fiction'
+Furniture,'Large Canvas Fabric Wardrobe ','Brand: IKEA, Type: Sofa, Colour: Grey'
+Electronics,'HP 2G3D3AA 27 inch LCD Monitor - Black','Brand: Samsung, RAM: 8GB, Model: Galaxy S21, Colour: Black'
+Furniture,'Coffee Table Tea Table for Living Room','Brand: IKEA, Type: Table, Colour: White'
+Furniture,'White Coffee Table With White Hairpin Leg','Brand: IKEA, Type: Chair, Colour: Blue'
+Clothing,'River Island Womens Maxi Jumper Dress','Brand: Nike, Size: M, Colour: Red'
+Electronics,'DELL Gaming Laptop CAD 15.6','Brand: DELL, RAM: 16GB, Model: G5 15, Colour: Black'

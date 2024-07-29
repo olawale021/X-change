@@ -131,6 +131,20 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="editCondition">Condition</label>
+                        <select class="form-control" id="editCondition" name="condition" required>
+                            <option value="New">New</option>
+                            <option value="Like New">Like New</option>
+                            <option value="Good">Good</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Poor">Poor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemFeatures"><i class="fas fa-heading"></i> Item Feature:</label>
+                        <input type="text" class="form-control" id="itemFeatures" name="itemFeatures" required>
+                    </div>
+                    <div class="form-group">
                         <label for="images"><i class="fas fa-images"></i> Images:</label>
                         <label for="images" class="custom-file-upload">
                             <i class="fas fa-cloud-upload-alt"></i> Choose Images

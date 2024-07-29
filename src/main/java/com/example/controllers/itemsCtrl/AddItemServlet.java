@@ -63,8 +63,34 @@ public class AddItemServlet extends HttpServlet {
 
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+        String categoryIdStr = request.getParameter("categoryId");
         String condition = request.getParameter("condition");
+        String itemFeatures = request.getParameter("itemFeatures");
+
+        // Input Validation
+        List<String> errors = new ArrayList<>();
+
+        if (title == null || title.trim().isEmpty()) {
+            errors.add("Title is required.");
+        }
+        if (description == null || description.trim().isEmpty()) {
+            errors.add("Description is required.");
+        }
+        int categoryId = 0;
+        try {
+            categoryId = Integer.parseInt(categoryIdStr);
+        } catch (NumberFormatException e) {
+            errors.add("Invalid category ID.");
+        }
+        if (condition == null || condition.trim().isEmpty()) {
+            errors.add("Condition is required.");
+        }
+
+        if (!errors.isEmpty()) {
+            request.setAttribute("errors", errors);
+            doGet(request, response);
+            return;
+        }
 
         LOGGER.info("Received item details: title=" + title + ", description=" + description + ", categoryId=" + categoryId + ", condition=" + condition);
 
@@ -108,6 +134,7 @@ public class AddItemServlet extends HttpServlet {
         newItem.setDescription(description);
         newItem.setCondition(condition);
         newItem.setCategoryId(categoryId);
+        newItem.setItemFeature(itemFeatures);
         newItem.setPhotos(imageUrls);  // Set the list of image URLs
         newItem.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         newItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
@@ -124,7 +151,3 @@ public class AddItemServlet extends HttpServlet {
         }
     }
 }
-
-
-
-

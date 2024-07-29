@@ -2,7 +2,6 @@ package com.example.models.items;
 
 import com.example.utils.DatabaseConnection;
 import com.example.models.category.CategoryModel;
-import com.example.utils.DatabaseConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -18,7 +17,7 @@ public class ItemsModelDAO {
     private static final Logger LOGGER = Logger.getLogger(ItemsModelDAO.class.getName());
 
     public int addItem(ItemsModel item) throws SQLException {
-        String sql = "INSERT INTO items (user_id, category_id, title, description, condition, photos, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO items (user_id, category_id, title, description, condition, photos, created_at, updated_at, item_features) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,6 +30,7 @@ public class ItemsModelDAO {
             pstmt.setString(6, new JSONArray(item.getPhotos()).toString());
             pstmt.setTimestamp(7, item.getCreatedAt());
             pstmt.setTimestamp(8, item.getUpdatedAt());
+            pstmt.setString(9, item.getItemFeature());
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -69,7 +69,8 @@ public class ItemsModelDAO {
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
                         rs.getString("category_name"),
-                        photosJson
+                        photosJson,
+                        rs.getString("item_features")
                 );
             }
         }
@@ -99,7 +100,8 @@ public class ItemsModelDAO {
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
                         rs.getString("category_name"),
-                        photosJson
+                        photosJson,
+                        rs.getString("item_features")
                 ));
             }
         }
@@ -107,21 +109,8 @@ public class ItemsModelDAO {
         return items;
     }
 
-    private List<String> parsePhotos(String photosString) {
-        List<String> photosList = new ArrayList<>();
-        try {
-            JSONArray photosArray = new JSONArray(photosString);
-            for (int i = 0; i < photosArray.length(); i++) {
-                photosList.add(photosArray.getString(i));
-            }
-        } catch (JSONException e) {
-            LOGGER.log(Level.SEVERE, "Invalid photos JSON format: " + photosString, e);
-        }
-        return photosList;
-    }
-
     public void updateItem(int itemId, ItemsModel item) throws SQLException {
-        String sql = "UPDATE items SET title = ?, description = ?, category_id = ?, condition = ?, photos = ? WHERE id = ?";
+        String sql = "UPDATE items SET title = ?, description = ?, category_id = ?, condition = ?, photos = ?, item_features = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -130,8 +119,12 @@ public class ItemsModelDAO {
             stmt.setString(2, item.getDescription());
             stmt.setInt(3, item.getCategoryId());
             stmt.setString(4, item.getCondition());
-            stmt.setString(5, item.getPhotosJson()); // Convert list to comma-separated string
-            stmt.setInt(6, itemId);
+            stmt.setString(5, item.getPhotosJson());
+            stmt.setString(6, item.getItemFeature());
+            stmt.setInt(7, itemId);
+
+            LOGGER.log(Level.INFO, "Executing update with parameters: {0}, {1}, {2}, {3}, {4}, {5}, {6}",
+                    new Object[]{item.getTitle(), item.getDescription(), item.getCategoryId(), item.getCondition(), item.getPhotosJson(), item.getItemFeature(), itemId});
 
             stmt.executeUpdate();
         }
@@ -147,7 +140,6 @@ public class ItemsModelDAO {
         }
     }
 
-
     public List<ItemsModel> getItemsByUserId(int userId) throws SQLException {
         List<ItemsModel> items = new ArrayList<>();
         String query = "SELECT items.*, categories.name as category_name FROM items JOIN categories ON items.category_id = categories.id WHERE items.user_id = ?";
@@ -158,23 +150,7 @@ public class ItemsModelDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                // Convert photos from JSONArray to List<String>
-                String photosString = rs.getString("photos");
-
-                List<String> photosList = new ArrayList<>();
-                if (photosString != null && !photosString.isEmpty()) {
-                    try {
-                        JSONArray photosArray = new JSONArray(photosString);
-                        for (int i = 0; i < photosArray.length(); i++) {
-                            photosList.add(photosArray.getString(i));
-                        }
-                    } catch (JSONException e) {
-                        LOGGER.log(Level.SEVERE, "Invalid JSON format in photos column for item ID: " + rs.getInt("id"), e);
-                        // Handle the invalid JSON case, e.g., skip this entry or add default value
-                    }
-                }
-
-                // Convert photosList to JSON string
+                List<String> photosList = parsePhotos(rs.getString("photos"));
                 String photosJson = convertPhotosListToJson(photosList);
 
                 items.add(new ItemsModel(
@@ -188,38 +164,59 @@ public class ItemsModelDAO {
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
                         rs.getString("category_name"),
-                        photosJson
+                        photosJson,
+                        rs.getString("item_features")
                 ));
             }
         }
         return items;
     }
 
-    // Method to convert List<String> to JSON string
-    private String convertPhotosListToJson(List<String> photosList) {
-        try {
-            return new ObjectMapper().writeValueAsString(photosList);
-        } catch (JsonProcessingException e) {
-            // Log the error and handle the exception as necessary
-            e.printStackTrace();
-            return "[]";
-        }
-    }
+    public List<ItemsModel> getItemsByCategories(String[] categoryIds) throws SQLException {
+        List<ItemsModel> items = new ArrayList<>();
+        String sql = "SELECT items.*, categories.name as category_name FROM items JOIN categories ON items.category_id = categories.id WHERE category_id IN (";
 
-    public String getItemPhotosJson(int itemId) throws SQLException {
-        String photosJson = null;
-        String sql = "SELECT photosJson FROM items WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, itemId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    photosJson = resultSet.getString("photosJson");
-                }
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < categoryIds.length; i++) {
+            placeholders.append("?");
+            if (i < categoryIds.length - 1) {
+                placeholders.append(",");
             }
         }
-        return photosJson;
+        sql += placeholders.toString() + ")";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            for (int i = 0; i < categoryIds.length; i++) {
+                stmt.setInt(i + 1, Integer.parseInt(categoryIds[i]));
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                List<String> photosList = parsePhotos(rs.getString("photos"));
+                String photosJson = convertPhotosListToJson(photosList);
+
+                items.add(new ItemsModel(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("category_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("condition"),
+                        photosList,
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"),
+                        rs.getString("category_name"),
+                        photosJson,
+                        rs.getString("item_features")
+                ));
+            }
+        }
+        return items;
     }
+
     public List<CategoryModel> getAllCategories() throws SQLException {
         List<CategoryModel> categories = new ArrayList<>();
         String query = "SELECT * FROM categories";
@@ -239,4 +236,25 @@ public class ItemsModelDAO {
         return categories;
     }
 
+    private List<String> parsePhotos(String photosString) {
+        List<String> photosList = new ArrayList<>();
+        try {
+            JSONArray photosArray = new JSONArray(photosString);
+            for (int i = 0; i < photosArray.length(); i++) {
+                photosList.add(photosArray.getString(i));
+            }
+        } catch (JSONException e) {
+            LOGGER.log(Level.SEVERE, "Invalid photos JSON format: " + photosString, e);
+        }
+        return photosList;
+    }
+
+    private String convertPhotosListToJson(List<String> photosList) {
+        try {
+            return new ObjectMapper().writeValueAsString(photosList);
+        } catch (JsonProcessingException e) {
+            LOGGER.log(Level.SEVERE, "Error converting photos list to JSON", e);
+            return "[]";
+        }
+    }
 }

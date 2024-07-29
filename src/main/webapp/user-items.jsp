@@ -278,6 +278,7 @@
                                             data-title="${item.title}"
                                             data-description="${item.description}"
                                             data-condition="${item.condition}"
+                                            data-itemfeature="${item.itemFeature}"
                                             data-category="${item.categoryId}"
                                             data-photos="<c:out value='${fn:escapeXml(item.photosJson)}' />">
                                         <i class="fas fa-edit"></i> Edit
@@ -336,6 +337,10 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="editItemFeatures">Item Features</label>
+                        <input type="text" class="form-control" id="editItemFeatures" name="itemFeatures" required>
+                    </div>
+                    <div class="form-group">
                         <label>Current Images</label>
                         <div id="currentImages" class="image-preview-container"></div>
                     </div>
@@ -374,6 +379,7 @@
         const title = $(button).data('title');
         const description = $(button).data('description');
         const condition = $(button).data('condition');
+        const itemFeatures = $(button).data('itemfeature');
         const categoryId = $(button).data('category');
         let photosJson = $(button).attr('data-photos'); // Retrieve photos JSON
 
@@ -382,6 +388,7 @@
         console.log("title:", title);
         console.log("description:", description);
         console.log("condition:", condition);
+        console.log("itemFeatures:", itemFeatures);
         console.log("categoryId:", categoryId);
         console.log("photosJson:", photosJson);
 
@@ -393,6 +400,7 @@
         $('#editDescription').val(description);
         $('#editCategory').val(categoryId);
         $('#editCondition').val(condition);
+        $('#editItemFeatures').val(itemFeatures);
         $('#existingPhotosJson').val(photosJson); // Set existing photos
 
         // Display current images
@@ -464,8 +472,6 @@
     $('#editItemForm').on('submit', function(e) {
         $(this).data('submitting', true);
     });
-
-
 </script>
 </body>
 </html>

@@ -1,0 +1,50 @@
+@relation ItemsDataset
+
+@attribute Brand {IKEA, HP, LG, River_Island, DELL, Adidas, Sony, Apple, LEGO, Dyson, Barbie, Instant_Pot, NERF, Samsung, Crayola, Nike, Fisher_Price, KitchenAid, Wilson, Spalding, ASUS, iRobot, Hasbro, Whirlpool, Hot_Wheels, None}
+@attribute Model {Galaxy_S21, G5_15, iPhone_13_Pro_Max, WH-1000XM4, MacBook_Air, Spectre_x360, Roomba_980, ROG_Strix, Ultra_One, Duo_7in1, V11, Track_Set, Technic_Bugatti_Chiron, City_Fire_Station, PlayStation_5, Millennium_Falcon, Artisan_Series, Professional_Stand_Mixer, Smart_Fridge, None}
+@attribute Type {Wardrobe, Monitor, Laptop, Washer, Dryer, Electronics, Table, Jumper_Dress, Appliances, Gaming_Laptop, Bookshelf, Shoes, Phone, Camera, Toy, Vacuum_Cleaner, Dollhouse, Pressure_Cooker, Refrigerator, Art_Supplies, Sports_Equipment, Tennis_Racket, Basketball, Soccer_Cleats, Car, Track_Set, None}
+@attribute Colour {Black, Grey, White, Blue, Red, Brown, Pink, Yellow, Silver, None}
+@attribute RAM {8GB, 16GB, 32GB, None}
+@attribute Size {S, M, L, XL, None}
+@attribute Author {F_Scott_Fitzgerald, Harper_Lee, George_Orwell, None}
+@attribute Genre {Fiction, Dystopian, None}
+@attribute Category {Books, Furniture, Electronics, Clothing, Toys, Appliances, Sports}
+
+@data
+IKEA,None,Wardrobe,Grey,None,None,None,None,Furniture
+HP,Galaxy_S21,Monitor,Black,8GB,None,None,None,Electronics
+IKEA,None,Table,White,None,None,None,None,Furniture
+River_Island,None,Jumper_Dress,Red,None,M,None,None,Clothing
+DELL,G5_15,Gaming_Laptop,Black,16GB,None,None,None,Electronics
+None,None,None,None, None, None,Harper_Lee,Fiction,Books
+IKEA,None,Table,Black,None,None,None,None,Furniture
+Sony,WH-1000XM4,Monitor,Black,32GB,None,None,None,Electronics
+IKEA,None,Bookshelf,Brown,None,None,None,None,Furniture
+Adidas,None,Shoes,White,None,None,None,None,Clothing
+Apple,iPhone_13_Pro_Max,Phone,Black,16GB,None,None,None,Electronics
+LEGO,Millennium_Falcon,Toy,None,None,None,None,None,Toys
+Dyson,V11,Vacuum_Cleaner,None,None,None,None,None,Appliances
+Barbie,None,Dollhouse,Pink,None,None,None,None,Toys
+Instant_Pot,Duo_7in1,Pressure_Cooker,None,None,None,None,None,Appliances
+NERF,Ultra_One,Toy,None,None,None,None,None,Toys
+Samsung,None,Refrigerator,Black,None,None,None,None,Appliances
+Crayola,None,Art_Supplies,None,None,None,None,None,Toys
+Nike,None,Sports_Equipment,White,None,None,None,None,Sports
+Hasbro,None,Toy,None,None,None,None,None,Toys
+Fisher_Price,None,Toy,Blue,None,None,None,None,Toys
+KitchenAid,Artisan_Series,Appliances,None,None,None,None,None,Appliances
+Wilson,None,Tennis_Racket,None,None,None,None,None,Sports
+Spalding,None,Basketball,None,None,None,None,None,Sports
+LEGO,City_Fire_Station,Toy,None,None,None,None,None,Toys
+Sony,PlayStation_5,Electronics,None,None,None,None,None,Electronics
+iRobot,Roomba_980,Vacuum_Cleaner,None,None,None,None,None,Appliances
+KitchenAid,Professional_Stand_Mixer,Appliances,None,None,None,None,None,Appliances
+LG,Smart_Fridge,Refrigerator,Black,None,None,None,None,Appliances
+Whirlpool,None,Washer,White,None,None,None,None,Appliances
+Whirlpool,None,Dryer,White,None,None,None,None,Appliances
+HP,Spectre_x360,Laptop,Black,16GB,None,None,None,Electronics
+ASUS,ROG_Strix,Gaming_Laptop,Black,32GB,None,None,None,Electronics
+Nike,None,Soccer_Cleats,Black,None,None,None,None,Sports
+Barbie,None,Toy,Pink,None,None,None,None,Toys
+Hot_Wheels,Track_Set,Toy,None,None,None,None,None,Toys
+LEGO,Technic_Bugatti_Chiron,Toy,None,None,None,None,None,Toys
